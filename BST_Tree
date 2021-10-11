@@ -1,0 +1,403 @@
+
+
+class BST:
+ 
+  Loc = 'r'
+  def __init__(self,data):
+    self.data = data
+    self.left = None
+    self.right = None
+    self.lh=-1
+    self.rh=-1
+
+  def Insert(self,data):
+    if self.data is None:
+      self.data = data
+      return
+
+    if self.data == data:
+      print('Duplicate', data)
+      return
+
+    if self.data > data:
+      if self.left:
+        self.left.Insert(data)
+
+      else:
+        self.left = BST(data)
+
+    if self.data < data:
+      if self.right :
+        self.right.Insert(data)
+
+      else:
+        self.right = BST(data)
+
+  def search(self,N):
+
+    if self.data is None:
+      print('Empty Tree')
+      return
+
+    if self.data == N:
+      k = self.searchLoc('')
+      print('Found it at Location',k)
+      return 
+
+    if self.data > N :
+
+      if self.left:
+        self.searchLoc('L')
+        self.left.search(N)
+
+      else:
+        print('Not Found')
+        return
+
+    if self.data < N :
+
+      if self.right:
+        self.searchLoc('R')
+        self.right.search(N)
+
+      else:
+        print('Not Found')
+        return
+
+
+  def searchLoc(self,S):
+
+    
+    BST.Loc=BST.Loc+S
+    return BST.Loc
+
+
+  def preorder(self):
+    print(self.data, end = " ")
+    if self.left:
+      self.left.preorder()
+
+    if self.right:
+      self.right.preorder()
+
+
+  def inorder(self):
+   
+    if self.left:
+      self.left.inorder()
+
+    print(self.data, end=" ")
+
+    if self.right:
+      self.right.inorder()
+
+
+  def postorder(self):
+   
+    if self.left:
+      self.left.postorder()
+
+    if self.right:
+      self.right.postorder()
+
+
+    print(self.data, end=" ")
+
+
+
+  def inorderSucc(self,N,suc):
+
+
+    if self.data == N:
+     
+      if self.right is not None:
+        k=self.right
+        while k.left:
+          k=k.left
+        suc  = k
+
+      if suc:
+        print(suc.data)
+      else:
+        print('Successor not existed')
+      
+
+     
+
+    elif self.data > N:
+      if self.left:
+        suc  = self
+        self.left.inorderSucc(N,suc)
+
+      else:
+        print(f'{N} is not present but its successor is {self.data}')
+       
+        
+
+    elif self.data < N:
+      if self.right:
+        
+        self.right.inorderSucc(N,suc)
+
+      else:
+        if suc:
+          print(f'{N} is not present but its successor is {suc.data}')
+        else:
+          print('Successor Not Existed')
+
+
+  def inorderPred(self,N,pre):
+
+
+    if self.data == N:
+     
+      if self.left is not None:
+        k=self.left
+        while k.right:
+          k=k.right
+        pre  = k
+
+      if pre:
+        print(pre.data)
+      else:
+        print('Predesessor not existed')
+      
+
+     
+
+    elif self.data > N:
+      if self.left:
+        
+        self.left.inorderPred(N,pre)
+
+      else:
+        if pre:
+          print(f'{N} is not present but its predesessor is {suc.data}')
+        else:
+          print('Predesessor Not Existed')
+        
+        
+       
+        
+
+    elif self.data < N:
+      if self.right:
+        pre = self
+        self.right.inorderPred(N,pre)
+
+      else:
+       print(f'{N} is not present but its predesessor is {self.data}')
+        
+
+   
+
+
+    
+    
+
+      
+
+
+
+
+  def Max(self):
+
+    if self.right:
+      self.right.Max()
+
+    else:
+      print(self.data)
+
+
+  def Min(self):
+
+    n = self
+
+    while n.left is not None:
+     n=n.left
+
+    else:
+      print(n.data)
+
+
+  def DelNode(self,N,r):
+    
+    if self.data is None:
+      print('Empty Tree')
+      return
+
+    if self.data == N:
+
+      
+
+      if self.left is None:
+        k=self.right
+
+        if self.data == r:
+          self.data = k.data
+          self.left = k.left
+          self.right = k.right
+          k=None
+          return
+
+        self = None
+        return k
+        
+       
+
+      if self.right is None:
+        k=self.left
+        if self.data == r:
+          self.data = k.data
+          self.left = k.left
+          self.right = k.right
+          k=None
+          return
+
+        self=None
+        return k
+       
+
+      n = self.right
+
+      while n.left is not None:
+        n=n.left
+
+      self.data = n.data
+      self.right = self.right.DelNode(n.data,r)
+      
+       
+      
+
+      
+
+
+
+    elif self.data > N:
+      if self.left:
+        self.left = self.left.DelNode(N,r)
+
+      else:
+        print('Not Found')
+        return
+
+    elif self.data < N:
+      if self.right:
+        self.right = self.right.DelNode(N,r)
+      else:
+        print('Not Found')
+        return
+
+    return self
+
+
+  def height(self,data):
+
+    global h
+
+   
+
+    if self.data is None:
+      print('Empty tree')
+      return
+
+
+    if self.left:
+      self.lh = self.left.height(data)
+
+    if self.right:
+      self.rh = self.right.height(data)
+
+    ans = max(self.lh,self.rh)+1
+
+    if self.data == data:
+      h = ans
+      
+     
+
+    return ans
+
+
+  def findHeight(self,data):
+    global h
+    self.height(data)
+    print(h)
+
+  def depth(self,data):
+    global d
+
+    if self.data is None:
+      print('Empty tree')
+      return
+
+    if self.data == data:
+      print(d+1)
+      return
+
+    elif self.data>data:
+      if self.left:
+        d=d+1
+        self.left.depth(data)
+
+      else:
+        print('-1')
+
+    elif self.data<data:
+        if self.right:
+          d=d+1
+          self.right.depth(data)
+
+        else:
+          print('-1')
+
+
+  def leftview(self,root):
+    if self.data is None:
+      return
+
+    print(self.data,end=" ")
+
+    if self.left:
+      self.left.leftview(root)
+
+    if self.data<root:
+
+      if self.right:
+        self.right.leftview(root)
+
+    
+
+  
+
+
+
+h = -1
+d = -1
+
+root = BST(None)
+
+L=[10,5,1,6,20,15,30]
+
+for i in L:
+  root.Insert(i)
+
+root.search(2)
+
+root.preorder()
+print("\n")
+root.inorder()
+print("\n")
+root.postorder()
+print('\n')
+
+
+
+
+
+
+
+
+
+
+
+
